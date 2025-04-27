@@ -1,71 +1,81 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
+import './App.css';
 
 const socket = io('http://localhost:5000');
 
-const App = () => {
+const ChatApp = ({ roomId, userType }) => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
-  const [room, setRoom] = useState('');  // NEW: to store the room
-  const [joined, setJoined] = useState(false); // NEW: to track if joined
 
   useEffect(() => {
+    // When component loads, join the room
+    socket.emit('joinRoom', { roomId });
+
+    // Listen for messages
     socket.on('message', (newMessage) => {
-      setMessages(prevMessages => [...prevMessages, newMessage]);
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
+    // Clean up
     return () => {
       socket.off('message');
     };
-  }, []);
+  }, [roomId]);
 
-  const joinRoom = () => {
-    if (room.trim() !== '') {
-      socket.emit('joinRoom', room);
-      setJoined(true);
-    }
-  };
+
+  useEffect(() => {
+    socket.on('message', (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+  
+      // Play notification sound
+      const audio = new Audio('/notification.mp3');
+      audio.play();
+    });
+  
+    return () => {
+      socket.off('message');
+    };
+  }, [roomId]);
+  
 
   const sendMessage = () => {
-    if (messageInput.trim() !== '' && room) {
-      socket.emit('sendMessageToRoom', { room, message: messageInput });
+    if (messageInput.trim() !== '') {
+      socket.emit('sendMessage', {
+        roomId,
+        message: messageInput,
+        sender: userType,
+      });
       setMessageInput('');
     }
   };
 
   return (
-    <div>
-      <h1>Simple Chat App with Rooms</h1>
+    <div className="chat-container">
+      <h3>Chat Room: {roomId}</h3>
 
-      {!joined ? (
-        <div>
-          <input
-            type="text"
-            value={room}
-            placeholder="Enter Room Name..."
-            onChange={(e) => setRoom(e.target.value)}
-          />
-          <button onClick={joinRoom}>Join Room</button>
-        </div>
-      ) : (
-        <div>
-          <input
-            type="text"
-            value={messageInput}
-            placeholder="Type your message..."
-            onChange={(e) => setMessageInput(e.target.value)}
-          />
-          <button onClick={sendMessage}>Send</button>
-        </div>
-      )}
-
-      <section>
+      <div className="messages">
         {messages.map((msg, index) => (
-          <div key={index}>{msg}</div>
+          <div
+            key={index}
+            className={`message ${msg.sender === userType ? 'self' : 'other'}`}
+          >
+            <strong>{msg.sender}:</strong> {msg.message}
+          </div>
         ))}
-      </section>
+      </div>
+
+      <div className="message-input">
+        <input
+          type="text"
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
+          placeholder="Type your message..."
+        />
+        <button onClick={sendMessage}>Send</button>
+      </div>
     </div>
   );
 };
 
-export default App;
+export default ChatApp;

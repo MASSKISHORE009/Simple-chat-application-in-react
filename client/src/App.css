@@ -1,42 +1,110 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* ChatApp.css */
+
+/* Overall chat container */
+.chat-container {
+  background: linear-gradient(135deg, #e0f7e9, #ffffff);
+  padding: 30px 20px;
+  border-radius: 20px;
+  max-width: 600px;
+  margin: 40px auto;
+  box-shadow: 0 8px 16px rgba(0, 128, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Title */
+.chat-container h3 {
   text-align: center;
+  font-size: 28px;
+  color: #2e7d32;
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Message box container */
+.messages {
+  background-color: #f1f8e9;
+  border: 2px solid #aed581;
+  border-radius: 12px;
+  padding: 15px;
+  height: 350px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Individual message style */
+.message {
+  background-color: #c5e1a5;
+  padding: 12px 16px;
+  border-radius: 12px;
+  max-width: 80%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  position: relative;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-.card {
-  padding: 2em;
+/* Differentiate sender */
+.message.self {
+  background-color: #a5d6a7;
+  align-self: flex-end;
+  border-bottom-right-radius: 0;
 }
 
-.read-the-docs {
-  color: #888;
+.message.other {
+  background-color: #dcedc8;
+  align-self: flex-start;
+  border-bottom-left-radius: 0;
+}
+
+/* Input area */
+.message-input {
+  display: flex;
+  gap: 10px;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 2px solid #81c784;
+  font-size: 16px;
+  outline: none;
+}
+
+.message-input button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.message-input button:hover {
+  background-color: #388e3c;
+}
+
+/* Scrollbar style */
+.messages::-webkit-scrollbar {
+  width: 6px;
+}
+.messages::-webkit-scrollbar-thumb {
+  background-color: #81c784;
+  border-radius: 3px;
+}
+.messages::-webkit-scrollbar-track {
+  background: #f1f8e9;
+}
+
+/* Animation for message appearance */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
