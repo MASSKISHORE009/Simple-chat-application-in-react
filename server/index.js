@@ -1,6 +1,6 @@
 import express from 'express';
-import { Server } from 'socket.io';
 import http from 'http';
+import { Server } from 'socket.io';  // ✅ Fixed import
 import cors from 'cors';
 
 const app = express();
@@ -9,28 +9,30 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",  // Allow all origins (for development only)
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
   },
 });
 
-// Listen for connections
 io.on('connection', (socket) => {
-  console.log('New client connected:', socket.id);
+  console.log(`User connected: ${socket.id}`);
 
-  // When a client joins a room
   socket.on('joinRoom', ({ roomId }) => {
     socket.join(roomId);
-    console.log(`Socket ${socket.id} joined room ${roomId}`);
+    console.log(`User ${socket.id} joined room: ${roomId}`);
   });
 
-  // When a client sends a message
-  socket.on('sendMessage', ({ roomId, message, sender }) => {
-    io.to(roomId).emit('message', { sender, message });
+  socket.on('sendMessage', (message) => {
+    console.log('Message received:', message);
+    io.to(message.roomId).emit('receiveMessage', message);
   });
 
-  // Disconnect
+  socket.on('typing', ({ roomId, user }) => {
+    socket.to(roomId).emit('userTyping', user);
+  });
+
   socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
+    console.log(`User disconnected: ${socket.id}`);
   });
 });
 

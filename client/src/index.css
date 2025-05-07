@@ -1,11 +1,19 @@
 :root {
-  font-family: 'Poppins', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --font-main: 'Poppins', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --green-dark: #1b5e20;
+  --green: #4caf50;
+  --green-light: #a5d6a7;
+  --green-lighter: #dcedc8;
+  --white: #ffffff;
+  --black: #0e0e0e;
+
+  font-family: var(--font-main);
+  line-height: 1.8;
+  font-weight: 500;
 
   color-scheme: light dark;
-  color: #2e4d25; /* Dark green for text */
-  background-color: #e8f5e9; /* Light leafy green */
+  color: var(--black);
+  background-color: var(--green-lighter);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,54 +21,60 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background: linear-gradient(145deg, var(--green-lighter), var(--green-light));
+}
+
 a {
   font-weight: 500;
-  color: #388e3c; /* Medium green */
+  color: var(--green-dark);
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 a:hover {
   color: #2e7d32;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  background: linear-gradient(to bottom, #dcedc8, #a5d6a7); /* Soft green gradient */
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-  color: #33691e; /* Strong green for headings */
+h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+  color: var(--green-dark);
+  margin-bottom: 0.5rem;
 }
 
 button {
   border-radius: 12px;
   border: 2px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  padding: 0.6em 1.4em;
+  font-size: 1rem;
   font-weight: 600;
   font-family: inherit;
-  background-color: #66bb6a; /* Fresh green button */
-  color: white;
+  background-color: var(--green);
+  color: var(--white);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 button:hover {
-  background-color: #4caf50;
-  border-color: #388e3c;
+  background-color: #388e3c;
+  border-color: var(--green-dark);
+  transform: translateY(-2px);
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto #81c784;
+  outline: 3px solid #81c784;
+  outline-offset: 2px;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #1b5e20;
+    color: var(--green-dark);
     background-color: #f1f8e9;
   }
   a:hover {
