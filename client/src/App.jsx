@@ -1,7 +1,6 @@
 import { useState } from "react";
 import PublicChat from "./PublicChat";
 import PrivateChat from "./PrivateChat";
-
 export default function App() {
   const [username, setUsername] = useState("");
   const [joined, setJoined] = useState(false);
